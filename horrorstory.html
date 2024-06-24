@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Fables</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="styles/horror.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="hello">
+        <div id="inputs-container">
+            <h3 class="playwrite-us-modern-head">Provide your inputs:</h3>
+        </div>
+    </div>
+
+    <div class="hello">
+        <button id="generateBtn" class="storybutton" onclick="generateStory()">Generate Story</button>
+    </div>
+
+    <div id="story-container" style="display: none;">
+        <h2 class="story">Here's a great story for you:</h2>
+        <h1 id="storyOutput" class="storyout"></h1>
+    </div>
+
+    <script>
+        const stories = {
+            story1: "In the isolated town of <town>, nestled deep within the <adjective> forest, a chilling <noun> haunted the locals for generations. Legend spoke of <name>, the <adjective> figure who lurked in the shadows of the abandoned <place>, seeking <plural noun> to appease a dark and <adjective> hunger. One stormy night, a group of <adjective> friends dared to venture into the forbidden <place> on a dare, unaware of the <adjective> danger that awaited them. As they crossed the threshold, the air grew thick with <adjective> whispers and the chill of <noun>. The eerie silence was broken only by the creaking of <noun> and the faint echo of <noun> that seemed to come from nowhere. Each step deeper into the <place> led them closer to the heart of the <adjective> mystery, where they uncovered <adjective> relics and disturbing <plural noun> that hinted at a sinister past. Suddenly, a <adjective> presence descended upon them, filling the air with a sense of <adjective> dread. They turned to flee, but the walls shifted, trapping them in a maze of <adjective> corridors and <adjective> rooms. Desperate and <adjective>, they struggled to find an escape as <name> closed in, its <adjective> form emerging from the darkness. In a final act of <noun>, they confronted the horror that had plagued their nightmares, realizing too late the <adjective> truth behind the legend.",
+            story2: "In the mansion on the outskirts of <town>, whispers of <adjective> apparitions and <adjective> curses filled the air like a lingering fog. The once-grand estate, shrouded in <adjective> mystery, stood as a testament to <adjective> tragedies and dark secrets buried within its walls. Local lore spoke of <name>, the <adjective> heir who vanished without a trace on a <adjective> night decades ago, leaving behind a legacy of <plural noun> and <plural noun>. Curiosity drew <pronoun> to the mansion's imposing gates, where <pronoun> found <pronoun>self entangled in a web of <adjective> illusions and <adjective> omens. As <pronoun> crossed the threshold into the <adjective> foyer, the atmosphere grew palpably <adjective>, as if the very essence of <name>'s presence lingered. Rooms twisted and warped with <adjective> shadows, echoing with the faint whispers of <noun> that echoed through time. Each corridor seemed to lead deeper into a labyrinth of <adjective> secrets and <adjective> despair, where <pronoun> discovered <adjective> artifacts and <adjective> clues that hinted at the mansion's <adjective> past. Suddenly, a chilling <noun> reverberated through the halls, freezing <pronoun> in <pronoun> tracks. <name>, the restless spirit of the mansion's former owner, materialized before <pronoun> in a <adjective> manifestation of <noun> and <noun>. With <adjective> terror coursing through <pronoun> veins, <pronoun> raced against time to unravel the truth and break the <adjective> curse that bound <name> to the mansion's <adjective> confines. ",
+            story3: "In the remote town of <town>, nestled among <adjective> mountains and dense <plural noun>, a chilling <noun> lurked in the shadows, terrifying the locals for years. Legends spoke of <name>, a <adjective> figure said to haunt the old <place> on the outskirts of town. One stormy night, a group of <adjective> friends dared to explore the abandoned <place> on a dare, unaware of the <adjective> danger that awaited them. As they ventured deeper into the decrepit building, the air grew thick with <adjective> whispers and the echoes of <plural noun> that seemed to come from nowhere. Each step echoed ominously in the <adjective> silence, the only light coming from their flickering <noun>. Suddenly, a <adjective> presence descended upon them, filling the air with a sense of <adjective> dread. They turned to flee, but the walls shifted, trapping them in a maze of <adjective> corridors and <adjective> rooms. Desperate and <adjective>, they searched for an escape as <name> closed in, its <adjective> form emerging from the darkness. In a final act of <noun>, they confronted the horror that had plagued their nightmares, realizing too late the <adjective> truth behind the legend."
+        };
+
+        // Global variable to store user inputs
+        let userInputs = {};
+
+        function getStoryFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('story');
+        }
+
+        function prepareInputs() {
+            const storyKey = getStoryFromURL();
+            const selectedStory = stories[storyKey];
+            const inputsContainer = document.getElementById('inputs-container');
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            // Use a Set to store unique placeholders
+            const uniquePlaceholders = [...new Set(placeholders)];
+
+            uniquePlaceholders.forEach(placeholder => {
+                const inputLabel = document.createElement('label');
+                inputLabel.innerText = `${placeholder.replace(/<|>/g, '')}:`;
+
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.id = placeholder;
+                inputField.placeholder = `Enter a ${placeholder.replace(/<|>/g, '')}`;
+
+                inputsContainer.appendChild(inputLabel);
+                inputsContainer.appendChild(inputField);
+                inputsContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function generateStory() {
+            const storyKey = getStoryFromURL();
+            let selectedStory = stories[storyKey];
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            placeholders.forEach(placeholder => {
+                const userInput = document.getElementById(placeholder).value;
+                userInputs[placeholder] = userInput; // Store user input in global object
+            });
+
+            // Replace placeholders with user inputs in the story
+            Object.keys(userInputs).forEach(key => {
+                selectedStory = selectedStory.replace(new RegExp(key, 'g'), userInputs[key]);
+            });
+
+            // Hide input section and show story section
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('generateBtn').style.display = 'none';
+            document.getElementById('story-container').style.display = 'block';
+
+            // Display generated story
+            document.getElementById('storyOutput').innerText = selectedStory;
+        }
+
+        // Initial preparation of inputs when the page loads
+        window.onload = prepareInputs;
+    </script>
+</body>
+</html>

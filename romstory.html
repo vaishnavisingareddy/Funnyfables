@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Fables</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="styles/rom.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="hello">
+        <div id="inputs-container">
+            <h3 class="playwrite-us-modern-head">Provide your inputs:</h3>
+        </div>
+    </div>
+
+    <div class="hello">
+        <button id="generateBtn" class="storybutton" onclick="generateStory()">Generate Story</button>
+    </div>
+
+    <div id="story-container" style="display: none;">
+        <h2 class="story">Here's a great story for you:</h2>
+        <h1 id="storyOutput" class="storyout"></h1>
+    </div>
+
+    <script>
+        const stories = {
+            story1: "In the small town of <town>, surrounded by <noun> and <noun>, a sweet love story unfolded between Sarah and Tom. Sarah, a kind-hearted <occupation> at the local <place>, caught the attention of Tom, a <adjective> mechanic who had grown up in <town>. Their first meeting happened at the annual <event>, where they bonded over their love for <plural noun>. Despite their initial <noun>, Sarah and Tom found themselves drawn to each other's <noun> and <noun>. They spent many evenings strolling through the <adjective> park and sharing <adjective> conversations over cups of <noun>. As their friendship blossomed into love, they faced <adjective> challenges together, from misunderstandings to <noun> adventures. Through it all, their love grew deeper, like a <noun> soaking up the <noun> after a summer rain. One beautiful <noun>, under the twinkling stars, Tom finally gathered the courage to propose to Sarah with a <noun> ring that sparkled like the <noun> in her eyes. With tears of <noun> and laughter, Sarah said yes, sealing their love story with a promise to cherish each other forever in the heart of <town>.",
+            story2: "In the cozy village of <village>, nestled among rolling <plural noun> and lush <noun>, a heartwarming love story unfolded between Emma and Jake. Emma, a <adjective> baker at the local <place>, caught the eye of Jake, a <adjective> carpenter who had recently moved to <village>. Their first encounter happened at the <adjective> farmer's market, where they bonded over their shared love for <plural noun>. Despite their different backgrounds, Emma and Jake found themselves drawn to each other's <noun> and <noun>. They spent sunny afternoons picnicking in the <adjective> meadow and sharing <adjective> stories by the <noun>. As their bond deepened, they faced <adjective> challenges together, from silly arguments to unexpected <noun>. Through it all, their love grew stronger, like a <noun> basking in the warmth of the <noun>. One starry <noun>, under a canopy of twinkling <plural noun>, Jake surprised Emma with a bouquet of <plural noun> and a heartfelt <noun>, professing his love for her. With joyful tears and laughter, Emma embraced Jake, knowing that their love story was just beginning in the heart of <village>.",
+            story3: "In the picturesque town of <town>, where <noun> bloom in abundance and the <noun> flows gently, a charming love story unfolded between Lily and Max. Lily, a talented <occupation> at the local <place>, caught the attention of Max, a friendly <occupation> who had just moved to <town>. Their first meeting was at the <adjective> café on Main Street, where they bonded over their shared love for <plural noun>. Despite their initial shyness, Lily and Max found themselves drawn to each other's <noun> and <noun>. They spent many evenings strolling through the <adjective> park and having <adjective> conversations over cups of <noun>. As their friendship blossomed into romance, they faced <adjective> challenges together, from <noun> to <noun> adventures. Through it all, their love grew deeper, like a <noun> soaking up the <noun> after a summer rain. One magical <noun>, under a canopy of twinkling stars, Max surprised Lily with a bouquet of <plural noun> and a heartfelt <noun>, professing his love for her. With joyful tears and laughter, Lily embraced Max, knowing that their love story was just beginning in the heart of <town>."
+        };
+
+        // Global variable to store user inputs
+        let userInputs = {};
+
+        function getStoryFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('story');
+        }
+
+        function prepareInputs() {
+            const storyKey = getStoryFromURL();
+            const selectedStory = stories[storyKey];
+            const inputsContainer = document.getElementById('inputs-container');
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            // Use a Set to store unique placeholders
+            const uniquePlaceholders = [...new Set(placeholders)];
+
+            uniquePlaceholders.forEach(placeholder => {
+                const inputLabel = document.createElement('label');
+                inputLabel.innerText = `${placeholder.replace(/<|>/g, '')}:`;
+
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.id = placeholder;
+                inputField.placeholder = `Enter a ${placeholder.replace(/<|>/g, '')}`;
+
+                inputsContainer.appendChild(inputLabel);
+                inputsContainer.appendChild(inputField);
+                inputsContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function generateStory() {
+            const storyKey = getStoryFromURL();
+            let selectedStory = stories[storyKey];
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            placeholders.forEach(placeholder => {
+                const userInput = document.getElementById(placeholder).value;
+                userInputs[placeholder] = userInput; // Store user input in global object
+            });
+
+            // Replace placeholders with user inputs in the story
+            Object.keys(userInputs).forEach(key => {
+                selectedStory = selectedStory.replace(new RegExp(key, 'g'), userInputs[key]);
+            });
+
+            // Hide input section and show story section
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('generateBtn').style.display = 'none';
+            document.getElementById('story-container').style.display = 'block';
+
+            // Display generated story
+            document.getElementById('storyOutput').innerText = selectedStory;
+        }
+
+        // Initial preparation of inputs when the page loads
+        window.onload = prepareInputs;
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>Funny Fables</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+        <link rel="stylesheet" href="styles/com.css" />
+    </head>
+    <body>
+        <h1 class="playwrite-us-modern-head main">Choose your favorite story...</h1>
+        <div class="main">
+            <div>
+                <button class="btn playwrite-es-deco-head pointer" onclick="selectStory('story1')"> Story 1 </button>
+            </div>
+            <div>
+                <button class="btn playwrite-es-deco-head pointer" onclick="selectStory('story2')">  Story 2</button>
+            </div>
+            <div>
+                <button class="btn playwrite-es-deco-head pointer" onclick="selectStory('story3')"> Story 3</button>
+
+            </div>
+        </div>
+
+
+
+
+       
+       
+      
+        <script>
+            function selectStory(story) {
+                
+                window.location.href = `comstory.html?story=${story}`;
+            }
+        </script>
+    </body>
+</html>

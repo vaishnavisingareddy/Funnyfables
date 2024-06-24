@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <title>Funny Fables</title>
+   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div>
+      <h1 class="playwrite-us-modern-head main">
+        Please Choose your favorite Genre...
+      </h1>
+    </div>
+
+    <div>
+      <div class="main">
+        <div>
+         <button onclick="goToPage1()" class="btn playwrite-es-deco-head pointer ">Adventure</button>
+        </div>
+        <div>
+         
+            <button  onclick="goToPage2( )"class="btn playwrite-es-deco-head pointer ">Comedy</button>
+        </div>
+        <div>
+         <button onclick="goToPage3()" class="btn playwrite-es-deco-head pointer ">Romance</button>
+        </div>
+      </div>
+      <div class="main">
+        <div>
+          <button onclick="goToPage4()" class="btn playwrite-es-deco-head pointer ">Drama</button>
+        </div>
+        <div>
+          <button onclick="goToPage5()" class="btn playwrite-es-deco-head pointer ">Crime</button>
+        </div>
+
+        <div>
+          
+            <button onclick="goToPage6()" class="btn playwrite-es-deco-head pointer ">Horror</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        function goToPage1() {
+            window.location.href = 'adventure.html';
+        }
+
+        function goToPage2() {
+            window.location.href = 'comedy.html';
+        }
+        function goToPage3() {
+            window.location.href = 'Romance.html';
+        }
+        function goToPage4() {
+            window.location.href = 'drama.html';
+        }
+        function goToPage5() {
+            window.location.href = 'crime.html';
+        }
+        function goToPage6() {
+            window.location.href = 'Horror.html';
+        }
+        
+    </script>
+
+
+
+  </body>
+</html>

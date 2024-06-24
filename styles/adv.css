@@ -1,0 +1,123 @@
+body{
+    background-color: #b2dfdb  ;
+}
+.main{
+    display: flex;
+    justify-content: space-around;
+    margin: 40px;
+    
+}
+.btn{
+    
+    height: 100px;
+    width: 190px;
+    border: 0px;
+    border-radius: 6px;
+    /* background-color: #6c757d; */
+    background-color: #ff9800;
+    color: white;
+    font-size: medium;
+    font-style: italic;
+}
+
+.playwrite-nz-head {
+    font-family: "Playwrite NZ", cursive;
+    font-optical-sizing: auto;
+    font-weight: 170;
+    font-style: normal;
+    font-size: 32;
+    color: #263238;
+  }
+.playwrite-es-deco-head {
+    font-family: "Playwrite ES Deco", cursive;
+    font-optical-sizing: auto;
+    font-weight: 190;
+    font-style: normal;
+    
+  }
+
+  .playwrite-us-modern-head{
+    font-family: "Playwrite US Modern", cursive;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20;
+    color: #263238;
+    
+  }
+
+  .pointer {cursor: pointer;}
+
+.storybutton{
+  
+  height: 70px;
+  width: 230px;
+  border: 0px;
+  border-radius: 6px;
+  /* background-color: #6c757d; */
+  background-color: #2A9D8F;
+  color: #263238;
+  font-size: x-large;
+  font-style: italic;
+
+  }
+.storyout{
+  font-family: "Playwrite NZ", cursive;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  font-size: 30;
+  color: #263238;
+  margin: 20px;
+
+}
+
+#inputs-container {
+  align-items: center;
+  margin-bottom: 20px;
+}
+#inputs-container label {
+  display: inline;
+  margin-bottom: 5px;
+  font-family: "Playwrite US Modern", cursive;
+  font-optical-sizing: auto;
+  font-weight: 170;
+  font-style: normal;
+  font-size: 27;
+  color: #263238;
+}
+#inputs-container input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 200px;
+  border-radius: 6px;
+  border: 0px;
+  margin-left: 20px;
+  height: 35px;
+}
+
+.hello{
+  display: flex;
+  justify-content: space-around;
+}
+.story{
+  font-family: "Playwrite NZ", cursive;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 30px;
+  color: #263238;
+  margin: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .main {
+      flex-direction: column;
+      margin: 20px;
+  }
+  .btn {
+      width: 100%; /* Full width buttons */
+      margin-bottom: 10px; /* Space between buttons */
+  }
+}

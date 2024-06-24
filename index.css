@@ -1,0 +1,62 @@
+body{
+    background-color: #263238  ;
+}
+.main{
+    display: flex;
+    justify-content: space-around;
+    margin: 40px;
+    
+}
+.btn{
+    
+    height: 190px;
+    width: 190px;
+    border: 0px;
+    border-radius: 6px;
+    /* background-color: #6c757d; */
+    background-color: #00bcd4;
+    color: beige;
+    font-size: x-large;
+    font-style: italic;
+}
+
+.playwrite-nz-head {
+    font-family: "Playwrite NZ", cursive;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 40;
+    color: #ffffff;
+  }
+.playwrite-es-deco-head {
+    font-family: "Playwrite ES Deco", cursive;
+    font-optical-sizing: auto;
+    font-weight: 190;
+    font-style: normal;
+    
+  }
+
+  .playwrite-us-modern-head{
+    font-family: "Playwrite US Modern", cursive;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 30;
+    color: #ffffff;
+    
+  }
+
+  .pointer {cursor: pointer;}
+
+
+
+  @media screen and (max-width: 768px) {
+    .main {
+        flex-direction: column;
+        margin: 20px;
+    }
+    .btn {
+        width: 100%; /* Full width buttons */
+        margin-bottom: 10px; /* Space between buttons */
+    }
+}

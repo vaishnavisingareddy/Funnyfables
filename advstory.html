@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Fables</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="styles/adv.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="hello">
+        <div id="inputs-container">
+            <h3 class="playwrite-us-modern-head">Provide your inputs:</h3>
+        </div>
+    </div>
+
+    <div class="hello">
+        <button id="generateBtn" class="storybutton" onclick="generateStory()">Generate Story</button>
+    </div>
+
+    <div id="story-container" style="display: none;">
+        <h2 class="story">Here's a great story for you:</h2>
+        <h1 id="storyOutput" class="storyout"></h1>
+    </div>
+
+    <script>
+        const stories = {
+            story1: "Once upon a time, there was a brave adventurer named <name>. One sunny morning, <name> woke up feeling excited. Determined to explore the <noun(place)>, <name> packed to a <noun(place)> and set off on a thrilling journey. Along the way, <name> encountered a friendly <animal>. It was <color> and <verb +ing> happily in the <noun(place)>. <name> cautiously approached and offered it some <food>. The <animal> eagerly accepted and became playful. Continuing on, <name> stumbled upon a mysterious <noun(place)> guarded by a curious <creature>. With bold courage, <name> confronted the <creature> and after a brief struggle, the <creature> allowed <name> to pass. Finally, at sunset, <name> reached the summit of a towering <noun(place)> and beheld a breathtaking view. Exhausted but satisfied, <name> knew this adventure would be remembered as exciting and memorable.",
+            story2: "Once upon a time, there was a curious adventurer named <name>. One sunny day, <name> felt <emotion> and decided to explore the <noun>. With a <noun> in hand, <name> set off on an exciting journey. Along the way, <name> encountered a friendly <animal>. It was <color> and <verb> happily in the <noun>. <name> cautiously approached and offered it some <food>. The <animal> eagerly accepted and became <adjective>. Continuing on, <name> stumbled upon a hidden <noun> guarded by a mysterious <creature>. With <adjective> courage, <name> confronted the <creature> and after a brief <verb>, the <creature> allowed <name> to pass. Finally, at sunset, <name> reached the top of a towering <noun> and saw a breathtaking view. Exhausted but happy, <name> knew this adventure would be remembered as <adjective> and <adjective>.",
+            story3: "One day, <name> from the <adjective> village found a mysterious <object> in the forest. Guided by an ancient map, <name> journeyed through <adjective> landscapes, encountering a <adjective> <creature> who offered help. After braving the <adjective> river and climbing the steep <adjective> mountain, <name> reached the hidden <place> of <legend>. There, using the <object>, <name> discovered a treasure that glowed with <emotion/adjective>. Returning home, <name> felt a deep sense of <another emotion/adjective>, having completed the quest of a lifetime."
+        };
+
+        // Global variable to store user inputs
+        let userInputs = {};
+
+        function getStoryFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('story');
+        }
+
+        function prepareInputs() {
+            const storyKey = getStoryFromURL();
+            const selectedStory = stories[storyKey];
+            const inputsContainer = document.getElementById('inputs-container');
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            // Use a Set to store unique placeholders
+            const uniquePlaceholders = [...new Set(placeholders)];
+
+            uniquePlaceholders.forEach(placeholder => {
+                const inputLabel = document.createElement('label');
+                inputLabel.innerText = `${placeholder.replace(/<|>/g, '')}:`;
+
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.id = placeholder;
+                inputField.placeholder = `Enter a ${placeholder.replace(/<|>/g, '')}`;
+
+                inputsContainer.appendChild(inputLabel);
+                inputsContainer.appendChild(inputField);
+                inputsContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function generateStory() {
+            const storyKey = getStoryFromURL();
+            let selectedStory = stories[storyKey];
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            placeholders.forEach(placeholder => {
+                const userInput = document.getElementById(placeholder).value;
+                userInputs[placeholder] = userInput; // Store user input in global object
+            });
+
+            // Replace placeholders with user inputs in the story
+            Object.keys(userInputs).forEach(key => {
+                selectedStory = selectedStory.replace(new RegExp(key, 'g'), userInputs[key]);
+            });
+
+            // Hide input section and show story section
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('generateBtn').style.display = 'none';
+            document.getElementById('story-container').style.display = 'block';
+
+            // Display generated story
+            document.getElementById('storyOutput').innerText = selectedStory;
+        }
+
+        // Initial preparation of inputs when the page loads
+        window.onload = prepareInputs;
+    </script>
+</body>
+</html>

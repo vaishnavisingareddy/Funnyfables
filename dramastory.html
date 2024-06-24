@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Fables</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="styles/drama.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="hello">
+        <div id="inputs-container">
+            <h3 class="playwrite-us-modern-head">Provide your inputs:</h3>
+        </div>
+    </div>
+
+    <div class="hello">
+        <button id="generateBtn" class="storybutton" onclick="generateStory()">Generate Story</button>
+    </div>
+
+    <div id="story-container" style="display: none;">
+        <h2 class="story">Here's a great story for you:</h2>
+        <h1 id="storyOutput" class="storyout"></h1>
+    </div>
+
+    <script>
+        const stories = {
+            story1: "In the picturesque town of <town>, the annual <event> was the highlight of the social calendar. This year, tensions ran high as rumors swirled about <name>, the enigmatic star of the local theater troupe. Known for <adjective> performances and a mysterious past, <name> was set to dazzle in the lead role of <play>. However, on opening night, disaster struck when <pronoun> <verb> on stage, forgetting <pronoun> <body part> and stumbling through <adjective> lines. Backstage, <pronoun> confided in <name>, the seasoned director with a reputation for <adjective> guidance. As rehearsals intensified and egos clashed, <pronoun> <verb> with <adjective> determination to regain <pronoun> <noun>. In a dramatic turn of events, <name>, the understudy, <verb> in at the last moment to save the show, delivering a performance that <verb> the audience to tears. Amidst the applause and <adjective> cheers, <pronoun> realized that sometimes, the greatest drama unfolds not on stage, but in the <noun> of those who dare to dream.",
+            story2: "In the bustling city of <city>, the prestigious <theater> was abuzz with anticipation for its latest production, The <adjective> Dream. Directed by the visionary <name>, renowned for <adjective> interpretations, the play promised to be a <adjective> spectacle. However, behind the scenes, tensions simmered among the <plural noun> of actors vying for the coveted lead role of <character>. As rehearsals progressed, egos clashed and <adjective> emotions ran high. The rivalry between <name>, the seasoned veteran known for <adjective> intensity, and <name>, the rising star with <adjective> charisma, reached a boiling point during a heated confrontation over <noun>. Amidst the chaos, <name>, the dedicated stage manager with a knack for <adjective> organization, worked tirelessly to keep the production on track. Opening night arrived with <adjective> anticipation and nervous energy. The performance unfolded with <adjective> passion and <adjective> drama, captivating the audience with every twist and turn of the <noun>. In the end, as the curtains closed and applause thundered through the theater, the cast and crew celebrated not just a successful show, but the bonds forged through <adjective> creativity and the pursuit of <noun>. ",
+            story3: "In the giant village of <village>, nestled amidst rolling hills and whispering <plural noun>, the annual <event> brought together the community in <adjective> celebration. This year, however, the festivities were overshadowed by a <adjective> mystery. The beloved <noun>, a symbol of unity and tradition, had disappeared from its pedestal in the village square. Amidst whispers of <adjective> suspicion and pointed fingers, <name>, the gentle-hearted <occupation> known for <adjective> wisdom, took it upon <pronoun>self to unravel the truth. Armed with <noun> and a keen eye for <adjective> detail, <pronoun> embarked on a quest that would uncover <adjective> secrets and test the bonds of friendship in the village. As <pronoun> <verb> through <adjective> alleyways and <adjective> meadows, <pronoun> discovered clues that led to unexpected revelations about <pronoun> <noun> and <noun>. In a dramatic twist, the culprit turned out to be <name>, the <occupation> who had harbored <adjective> resentment over <noun>. With the <noun> returned and forgiveness sought, the village came together once more, celebrating not just the <event>, but the resilience of their <adjective> community."
+        };
+
+        // Global variable to store user inputs
+        let userInputs = {};
+
+        function getStoryFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('story');
+        }
+
+        function prepareInputs() {
+            const storyKey = getStoryFromURL();
+            const selectedStory = stories[storyKey];
+            const inputsContainer = document.getElementById('inputs-container');
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            // Use a Set to store unique placeholders
+            const uniquePlaceholders = [...new Set(placeholders)];
+
+            uniquePlaceholders.forEach(placeholder => {
+                const inputLabel = document.createElement('label');
+                inputLabel.innerText = `${placeholder.replace(/<|>/g, '')}:`;
+
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.id = placeholder;
+                inputField.placeholder = `Enter a ${placeholder.replace(/<|>/g, '')}`;
+
+                inputsContainer.appendChild(inputLabel);
+                inputsContainer.appendChild(inputField);
+                inputsContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function generateStory() {
+            const storyKey = getStoryFromURL();
+            let selectedStory = stories[storyKey];
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            placeholders.forEach(placeholder => {
+                const userInput = document.getElementById(placeholder).value;
+                userInputs[placeholder] = userInput; // Store user input in global object
+            });
+
+            // Replace placeholders with user inputs in the story
+            Object.keys(userInputs).forEach(key => {
+                selectedStory = selectedStory.replace(new RegExp(key, 'g'), userInputs[key]);
+            });
+
+            // Hide input section and show story section
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('generateBtn').style.display = 'none';
+            document.getElementById('story-container').style.display = 'block';
+
+            // Display generated story
+            document.getElementById('storyOutput').innerText = selectedStory;
+        }
+
+        // Initial preparation of inputs when the page loads
+        window.onload = prepareInputs;
+    </script>
+</body>
+</html>

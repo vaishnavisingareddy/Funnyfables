@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Fables</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="styles/crime.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&family=Playwrite+MX&family=Playwrite+NZ:wght@100..400&family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="hello">
+        <div id="inputs-container">
+            <h3 class="playwrite-us-modern-head">Provide your inputs:</h3>
+        </div>
+    </div>
+
+    <div class="hello">
+        <button id="generateBtn" class="storybutton" onclick="generateStory()">Generate Story</button>
+    </div>
+
+    <div id="story-container" style="display: none;">
+        <h2 class="story">Here's a great story for you:</h2>
+        <h1 id="storyOutput" class="storyout"></h1>
+    </div>
+
+    <script>
+        const stories = {
+            story1: "In the bustling city of <city>, Detective <name> was known for cracking the toughest cases with a combination of sharp wit and <adjective> charm. One day, a <noun> was reported stolen from the <place> downtown, sending the entire precinct into a frenzy. With a <adjective> hunch and a bag full of <plural noun>, Detective <name> embarked on an investigation that would twist and turn through the seedy underbelly of the city. As clues surfaced and suspects <verb> nervously, the detective's <body part> never wavered. In the end, it was the quirky tip-off from a <occupation> that led to the unmasking of the unlikely culprit: the <animal>. The city celebrated, but Detective <name> knew that tomorrow would bring another mystery, another <noun> to solve.",
+            story2: "In the quiet town of <town>, notorious thief <name> struck again, this time targeting the local <noun> museum. The <adjective> crime scene left everyone baffled as <pronoun> had managed to steal the prized <noun> right under the nose of the night security guard. Detective <name>, renowned for <adjective> deductive reasoning, was called in to crack the case. Armed with a magnifying glass and a keen eye for detail, <pronoun> combed through the <adjective> clues left behind. Interviews with witnesses painted a <adjective> picture of the suspect, described as <adjective> and <adjective>. It wasn't until <pronoun> discovered a <noun> tucked away in the bushes near the museum that the pieces began to fall into place. The thrilling chase led Detective <name> through <adjective> alleyways and <adjective> rooftops, culminating in a dramatic showdown at the abandoned <place>. With <pronoun> heart pounding, <pronoun> finally apprehended <name>, who confessed to the crime in a <adjective> whisper. As <pronoun> led the handcuffed thief away, the townsfolk cheered, grateful that peace had returned to their <adjective> streets. ",
+            story3: "In the bustling city of <city>, a mysterious <noun> heist rocked the annual <event>. The <adjective> crime left authorities baffled, with the <plural noun> missing from the <place>. Detective <name>, known for <adjective> instincts and a penchant for <plural noun>, was called to investigate. Armed with <noun> and determination, <pronoun> combed through <adjective> clues and interrogated <adjective> suspects. The trail led <pronoun> through <adjective> alleys and <adjective> corners of the city, chasing elusive shadows and deciphering cryptic <plural noun>. With each discovery, the puzzle of the <noun> heist unraveled, revealing a web of <adjective> motives and unexpected alliances. In a dramatic twist, the thief turned out to be <name>, the <occupation> who had organized the <event> itself! With the <plural noun> recovered and justice served, Detective <name> returned to <place>, ready to face the next <noun> that dared challenge <pronoun>."
+        };
+
+        // Global variable to store user inputs
+        let userInputs = {};
+
+        function getStoryFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('story');
+        }
+
+        function prepareInputs() {
+            const storyKey = getStoryFromURL();
+            const selectedStory = stories[storyKey];
+            const inputsContainer = document.getElementById('inputs-container');
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            // Use a Set to store unique placeholders
+            const uniquePlaceholders = [...new Set(placeholders)];
+
+            uniquePlaceholders.forEach(placeholder => {
+                const inputLabel = document.createElement('label');
+                inputLabel.innerText = `${placeholder.replace(/<|>/g, '')}:`;
+
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.id = placeholder;
+                inputField.placeholder = `Enter a ${placeholder.replace(/<|>/g, '')}`;
+
+                inputsContainer.appendChild(inputLabel);
+                inputsContainer.appendChild(inputField);
+                inputsContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function generateStory() {
+            const storyKey = getStoryFromURL();
+            let selectedStory = stories[storyKey];
+
+            const placeholders = selectedStory.match(/<[^>]+>/g);
+
+            placeholders.forEach(placeholder => {
+                const userInput = document.getElementById(placeholder).value;
+                userInputs[placeholder] = userInput; // Store user input in global object
+            });
+
+            // Replace placeholders with user inputs in the story
+            Object.keys(userInputs).forEach(key => {
+                selectedStory = selectedStory.replace(new RegExp(key, 'g'), userInputs[key]);
+            });
+
+            // Hide input section and show story section
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('generateBtn').style.display = 'none';
+            document.getElementById('story-container').style.display = 'block';
+
+            // Display generated story
+            document.getElementById('storyOutput').innerText = selectedStory;
+        }
+
+        // Initial preparation of inputs when the page loads
+        window.onload = prepareInputs;
+    </script>
+</body>
+</html>
